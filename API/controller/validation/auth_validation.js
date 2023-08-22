@@ -1,3 +1,6 @@
+const bcrypt = require("bcrypt");
+const { db } = require("../../config");
+const { getUserByEmailQuery } = require("../query");
 const { emailFormat, msg } = require("../../utils");
 
 const registerValidation = (req) => {
@@ -26,4 +29,61 @@ const registerValidation = (req) => {
   return "";
 };
 
-module.exports = { registerValidation };
+const loginValidation = (req) => {
+  const { email, password } = req;
+
+  if (!email) {
+    return msg.errEmptyEmail;
+  }
+
+  if (!emailFormat.test(email)) {
+    return msg.errEmailFormat;
+  }
+
+  if (!password) {
+    return msg.errEmptyPassword;
+  }
+
+  return "";
+};
+
+const validateEmailRegister = async (email) => {
+  const result = await db.query(getUserByEmailQuery(email));
+  if (result[0].length > 0) {
+    return msg.errEmailExist;
+  }
+
+  return "";
+};
+
+const validateRequestLogin = async (req) => {
+  const { email, password } = req;
+
+  const result = await db.query(getUserByEmailQuery(email));
+  if (result[0].length === 0) {
+    return {
+      user: null,
+      err: msg.errEmailNotFound,
+    };
+  }
+
+  const validPassword = await bcrypt.compare(password, result[0][0].password);
+  if (!validPassword) {
+    return {
+      user: null,
+      err: msg.errWrongPassword,
+    };
+  }
+
+  return {
+    user: result[0][0],
+    err: "",
+  };
+};
+
+module.exports = {
+  registerValidation,
+  loginValidation,
+  validateEmailRegister,
+  validateRequestLogin,
+};

@@ -1,3 +1,13 @@
-const { registerValidation } = require("./auth_validation");
+const {
+  registerValidation,
+  loginValidation,
+  validateEmailRegister,
+  validateRequestLogin,
+} = require("./auth_validation");
 
-module.exports = { registerValidation };
+module.exports = {
+  registerValidation,
+  loginValidation,
+  validateEmailRegister,
+  validateRequestLogin,
+};

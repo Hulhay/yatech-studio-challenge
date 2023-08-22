@@ -15,9 +15,11 @@ const msg = {
   errEmptyPassword: "password cannot be empty",
   errShortPassword: "password must have a minimum of 8 characters",
   errEmailExist: "email already exists",
+  errWrongPassword: "wrong password",
 
   // 500
   errFailedRegister: "failed to regsiter",
+  errFailedLogin: "failed to login",
 };
 
 module.exports = { msg, emailFormat };

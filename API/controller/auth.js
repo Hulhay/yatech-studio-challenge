@@ -1,8 +1,13 @@
-const db = require("../config");
+const { db } = require("../config");
 const bcrypt = require("bcrypt");
-const { buildResponse, msg } = require("../utils");
-const { getUserByEmailQuery, insertNewUser } = require("./query");
-const { registerValidation } = require("./validation");
+const { buildResponse, msg, generateTokens } = require("../utils");
+const { insertNewUser } = require("./query");
+const {
+  registerValidation,
+  loginValidation,
+  validateEmailRegister,
+  validateRequestLogin,
+} = require("./validation");
 
 const register = async (req, res) => {
   const err = registerValidation(req.body);
@@ -15,9 +20,9 @@ const register = async (req, res) => {
   const encryptedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const result = await db.query(getUserByEmailQuery(email));
-    if (result[0].length > 0) {
-      return buildResponse(res, 422, msg.errEmailExist, null);
+    const err = await validateEmailRegister(email);
+    if (err) {
+      return buildResponse(res, 422, err, null);
     }
 
     await db.query(insertNewUser(name, email, encryptedPassword));
@@ -27,4 +32,29 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register };
+const login = async (req, res) => {
+  const err = loginValidation(req.body);
+  if (err) {
+    return buildResponse(res, 422, err, null);
+  }
+
+  try {
+    const { user, err } = await validateRequestLogin(req.body);
+    if (err) {
+      return buildResponse(res, 422, err, null);
+    }
+
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    const data = {
+      accessToken,
+      refreshToken,
+    };
+
+    return buildResponse(res, 200, msg.success, data);
+  } catch (err) {
+    return buildResponse(res, 500, msg.errFailedLogin, null);
+  }
+};
+
+module.exports = { register, login };

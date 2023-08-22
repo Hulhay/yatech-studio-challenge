@@ -1,4 +1,4 @@
 const { getHealth } = require("./health");
-const { register } = require("./auth");
+const { register, login } = require("./auth");
 
-module.exports = { getHealth, register };
+module.exports = { getHealth, register, login };
