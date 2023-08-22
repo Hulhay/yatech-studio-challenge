@@ -5,6 +5,13 @@ const msg = {
   // 200
   success: "success",
 
+  // 401
+  errEmptyAuthorization: "authorization is empty",
+  errInvalidAuthorization: "invalid authorization",
+
+  // 403
+  errInvalidToken: "invalid token",
+
   // 404
   errEmailNotFound: "email not found",
 
