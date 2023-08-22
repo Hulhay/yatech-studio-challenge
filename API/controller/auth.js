@@ -49,8 +49,8 @@ const login = async (req, res) => {
     const { accessToken, refreshToken } = generateTokens(user);
 
     const data = {
-      accessToken,
-      refreshToken,
+      access_token: accessToken,
+      refresh_token: refreshToken,
     };
 
     return buildResponse(res, 200, msg.success, data);
@@ -69,7 +69,6 @@ const refreshToken = async (req, res) => {
 
   try {
     const decoded = jwt.verify(refresh_token, getJWTPrivateRefreshKey());
-    console.log({ decoded });
 
     const user = { id: decoded.id, email: decoded.email };
 
