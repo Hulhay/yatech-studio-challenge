@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { db } = require("../../config");
 const { getUserByEmailQuery } = require("../query");
-const { emailFormat, msg } = require("../../utils");
+const { emailFormat, msg, buildResponse } = require("../../utils");
 
 const registerValidation = (req) => {
   const { name, email, password } = req;
@@ -81,9 +81,20 @@ const validateRequestLogin = async (req) => {
   };
 };
 
+const validateRefreshToken = (req) => {
+  const { refresh_token } = req;
+
+  if (!refresh_token) {
+    return msg.errEmptyToken;
+  }
+
+  return "";
+};
+
 module.exports = {
   registerValidation,
   loginValidation,
   validateEmailRegister,
   validateRequestLogin,
+  validateRefreshToken,
 };

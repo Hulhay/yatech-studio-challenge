@@ -3,6 +3,7 @@ const {
   loginValidation,
   validateEmailRegister,
   validateRequestLogin,
+  validateRefreshToken,
 } = require("./auth_validation");
 
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   loginValidation,
   validateEmailRegister,
   validateRequestLogin,
+  validateRefreshToken,
 };

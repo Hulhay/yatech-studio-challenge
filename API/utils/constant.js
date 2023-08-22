@@ -23,6 +23,8 @@ const msg = {
   errShortPassword: "password must have a minimum of 8 characters",
   errEmailExist: "email already exists",
   errWrongPassword: "wrong password",
+  errEmptyToken: "token cannot be empty",
+  errInvalidRefreshToken: "invalid refresh token",
 
   // 500
   errFailedRegister: "failed to regsiter",

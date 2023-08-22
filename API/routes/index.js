@@ -5,6 +5,7 @@ const {
   register,
   login,
   getPrivateMessage,
+  refreshToken,
 } = require("../controller");
 const { authorizeJWT } = require("../middleware");
 
@@ -19,6 +20,7 @@ router.group("/api/v1/health", (r) => {
 router.group("/api/v1/auth", (r) => {
   r.post("/register", register);
   r.post("/login", login);
+  r.post("/refresh-token", refreshToken);
 });
 
 // private router

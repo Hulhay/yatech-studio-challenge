@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { buildResponse, msg } = require("../utils");
-const { getJWTPrivateKey } = require("../config");
+const { getJWTPrivateAccessKey } = require("../config");
 
 const authorizeJWT = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -18,7 +18,7 @@ const authorizeJWT = (req, res, next) => {
   }
 
   try {
-    const tokenData = jwt.verify(auth[1], getJWTPrivateKey());
+    const tokenData = jwt.verify(auth[1], getJWTPrivateAccessKey());
     req.tokenData = tokenData;
     next();
   } catch (err) {

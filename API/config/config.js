@@ -1,7 +1,11 @@
 require("dotenv").config();
 
-const getJWTPrivateKey = () => {
-  return process.env.JWT_PRIVATE_KEY;
+const getJWTPrivateAccessKey = () => {
+  return process.env.JWT_PRIVATE_ACCESS_KEY;
+};
+
+const getJWTPrivateRefreshKey = () => {
+  return process.env.JWT_PRIVATE_REFRESH_KEY;
 };
 
 const getExpAccessToken = () => {
@@ -13,7 +17,8 @@ const getExpRefreshToken = () => {
 };
 
 module.exports = {
-  getJWTPrivateKey,
+  getJWTPrivateAccessKey,
+  getJWTPrivateRefreshKey,
   getExpAccessToken,
   getExpRefreshToken,
 };

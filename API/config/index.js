@@ -1,13 +1,15 @@
 const db = require("./database");
 const {
+  getJWTPrivateAccessKey,
+  getJWTPrivateRefreshKey,
   getExpAccessToken,
   getExpRefreshToken,
-  getJWTPrivateKey,
 } = require("./config");
 
 module.exports = {
   db,
+  getJWTPrivateAccessKey,
+  getJWTPrivateRefreshKey,
   getExpAccessToken,
   getExpRefreshToken,
-  getJWTPrivateKey,
 };

@@ -1,4 +1,5 @@
-const { db } = require("../config");
+const { db, getJWTPrivateRefreshKey } = require("../config");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { buildResponse, msg, generateTokens } = require("../utils");
 const { insertNewUser } = require("./query");
@@ -7,6 +8,7 @@ const {
   loginValidation,
   validateEmailRegister,
   validateRequestLogin,
+  validateRefreshToken,
 } = require("./validation");
 
 const register = async (req, res) => {
@@ -57,4 +59,30 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const refreshToken = async (req, res) => {
+  const err = validateRefreshToken(req.body);
+  if (err) {
+    return buildResponse(res, 422, err, null);
+  }
+
+  const { refresh_token } = req.body;
+
+  try {
+    const decoded = jwt.verify(refresh_token, getJWTPrivateRefreshKey());
+    console.log({ decoded });
+
+    const user = { id: decoded.id, email: decoded.email };
+
+    const { accessToken } = generateTokens(user);
+
+    const data = {
+      accessToken,
+    };
+
+    return buildResponse(res, 200, msg.success, data);
+  } catch (err) {
+    return buildResponse(res, 422, msg.errInvalidRefreshToken, null);
+  }
+};
+
+module.exports = { register, login, refreshToken };
