@@ -51,6 +51,12 @@ CREATE TABLE users (
 	email varchar(255) not null,
 	password varchar(255) not null
 );
+
+CREATE TABLE products (
+    id int primary key auto_increment not null,
+    name varchar(255) not null.
+    price double not null default 0
+);
 ```
 
 - create .env file

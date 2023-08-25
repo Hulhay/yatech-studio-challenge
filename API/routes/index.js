@@ -6,6 +6,10 @@ const {
   login,
   getPrivateMessage,
   refreshToken,
+  insertProducts,
+  getProducts,
+  updateProduct,
+  deleteProduct,
 } = require("../controller");
 const { authorizeJWT } = require("../middleware");
 
@@ -26,6 +30,14 @@ router.group("/api/v1/auth", (r) => {
 // private router
 router.group("/api/v1/private", authorizeJWT, (r) => {
   r.get("/", getPrivateMessage);
+});
+
+// product router
+router.group("/api/v1/products", authorizeJWT, (r) => {
+  r.post("/", insertProducts);
+  r.get("/", getProducts);
+  r.patch("/:id", updateProduct);
+  r.delete("/:id", deleteProduct);
 });
 
 module.exports = router;
